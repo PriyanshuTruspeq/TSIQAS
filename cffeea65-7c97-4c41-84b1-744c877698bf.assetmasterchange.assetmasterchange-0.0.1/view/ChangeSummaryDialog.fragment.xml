@@ -1,0 +1,505 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+>
+    <Dialog
+        id="changeSummaryDialog"
+        title="Change Summary for Asset: {changeSummaryDetails>/FixedAsset}"
+        contentWidth="80%"
+        contentHeight="70%"
+        stretch="{device>/system/phone}"
+        ariaLabelledBy="changeSummaryDialogTitle"
+    >
+        <content>
+            <VBox
+                id="changeSummaryMainVBox"
+                class="sapUiMediumMargin"
+            >
+                <!-- Header Information -->
+                <l:BlockLayout id="changeSummaryHeaderLayout">
+                    <l:BlockLayoutRow id="changeSummaryHeaderRow">
+                        <l:BlockLayoutCell
+                            id="changeSummaryHeaderCell"
+                            class="sapUiNoPadding"
+                            backgroundColorSet="ColorSet11"
+                            backgroundColorShade="ShadeA"
+                        >
+                            <HBox
+                                id="changeSummaryHeaderBox"
+                                alignItems="Center"
+                                justifyContent="SpaceBetween"
+                                class="sapUiMediumMargin"
+                            >
+                                <VBox id="changeSummaryAssetInfoBox">
+                                    <Title
+                                        id="changeSummaryDialogTitle"
+                                        text="Asset: {changeSummaryDetails>/FixedAsset}"
+                                        level="H3"
+                                    />
+                                    <Text
+                                        id="changeSummarySubtitle"
+                                        text="Company: {changeSummaryDetails>/CompanyCode} | Sequence: {changeSummaryDetails>/SequenceNumber}"
+                                    />
+                                </VBox>
+                                <HBox
+                                    id="changeSummaryStatsBox"
+                                    alignItems="Center"
+                                    direction="Column"
+                                >
+                                    <ObjectNumber
+                                        id="changeSummaryTotalChanges"
+                                        number="{= ${changeSummaryDetails>/ChangesSummary/totalChanges} || 0}"
+                                        unit="Total Changes"
+                                        state="Success"
+                                        class="sapUiTinyMarginBottom"
+                                    />
+                                    <ObjectNumber
+                                        id="changeSummaryBlankAssignments"
+                                        number="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} || 0}"
+                                        unit="Blank Assignments"
+                                        state="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} > 0 ? 'Warning' : 'None'}"
+                                    />
+                                </HBox>
+                            </HBox>
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                </l:BlockLayout>
+
+                <!-- Quick Overview -->
+                <Panel
+                    id="changeSummaryOverviewPanel"
+                    headerText="Change Overview"
+                    expandable="false"
+                    expanded="true"
+                    class="sapUiSmallMarginTop sapUiSmallMarginBottom"
+                >
+                    <f:SimpleForm
+                        id="changeSummaryOverviewForm"
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        labelSpanS="12"
+                        columnsXL="3"
+                        columnsL="3"
+                        columnsM="2"
+                    >
+                        <f:content>
+                            <Label
+                                id="totalChangesLabel"
+                                text="Total Changes"
+                            />
+                            <Text
+                                id="totalChangesValue"
+                                text="{= ${changeSummaryDetails>/ChangesSummary/totalChanges} || 0}"
+                            />
+
+                            <Label
+                                id="blankAssignmentsLabel"
+                                text="Blank Assignments"
+                            />
+                            <Text
+                                id="blankAssignmentsValue"
+                                text="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} || 0}"
+                            />
+
+                            <Label
+                                id="affectedSectionsLabel"
+                                text="Affected Sections"
+                            />
+                            <Text
+                                id="affectedSectionsValue"
+                                text="{= Object.keys(${changeSummaryDetails>/ChangesSummary/sectionChanges} || {}).length}"
+                            />
+
+                            <Label
+                                id="validationStatusLabel"
+                                text="Validation Status"
+                            />
+                            <ObjectStatus
+                                id="validationStatusValue"
+                                text="{changeSummaryDetails>/Status}"
+                                state="{= ${changeSummaryDetails>/Status} === 'Valid' ? 'Success' : 'Error'}"
+                            />
+
+                            <Label
+                                id="_IDGenLabel4"
+                                text="Contains Blanks"
+                            />
+                            <Text
+                                id="hasBlankAssignmentsValue"
+                                text="{= ${changeSummaryDetails>/HasBlankAssignments} ? 'Yes' : 'No'}"
+                            />
+                        </f:content>
+                    </f:SimpleForm>
+                </Panel>
+
+                <!-- Warnings Section -->
+                <MessageStrip
+                    id="blankAssignmentsSummaryWarning"
+                    text="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} + ' field(s) will be set to blank. Please review carefully.'}"
+                    type="Warning"
+                    showIcon="true"
+                    visible="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} > 0}"
+                    class="sapUiSmallMarginBottom"
+                />
+
+                <!-- Changes by Section -->
+                <Panel
+                    id="changesBySectionSummaryPanel"
+                    headerText="Changes by Section"
+                    expandable="true"
+                    expanded="true"
+                    visible="{= ${changeSummaryDetails>/ChangesSummary/totalChanges} > 0}"
+                >
+                    <List
+                        id="sectionChangesSummaryList"
+                        items="{
+                            path: 'changeSummaryDetails>/ChangesSummary/sectionChanges',
+                            templateShareable: false
+                        }"
+                        mode="None"
+                    >
+                        <CustomListItem id="sectionChangesSummaryItem">
+                            <Panel
+                                id="sectionSummaryPanel"
+                                headerText="{= $data.key.replace('_', ' ').replace(/^\w/, function(c) { return c.toUpperCase(); }) + ' (' + $data.value.length + ' changes)'}"
+                                expandable="true"
+                                expanded="true"
+                                class="sapUiTinyMarginBottom"
+                            >
+                                <Table
+                                    id="sectionSummaryTable"
+                                    items="{$data>/value}"
+                                    mode="None"
+                                    fixedLayout="false"
+                                >
+                                    <columns>
+                                        <Column
+                                            id="sectionFieldColumn"
+                                            width="30%"
+                                        >
+                                            <Text
+                                                id="sectionFieldHeader"
+                                                text="Field"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="sectionNewValueColumn"
+                                            width="50%"
+                                        >
+                                            <Text
+                                                id="sectionNewValueHeader"
+                                                text="New Value"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="sectionBlankStatusColumn"
+                                            width="20%"
+                                        >
+                                            <Text
+                                                id="sectionBlankStatusHeader"
+                                                text="Status"
+                                            />
+                                        </Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem
+                                            id="sectionSummaryTableItem"
+                                        >
+                                            <cells>
+                                                <Text
+                                                    id="sectionFieldCell"
+                                                    text="{$data>displayName}"
+                                                />
+                                                <Text
+                                                    id="sectionNewValueCell"
+                                                    text="{= ${$data>isBlankValue} ? '&lt;Blank&gt;' : ${$data>newValue}}"
+                                                    wrapping="true"
+                                                />
+                                                <ObjectStatus
+                                                    id="sectionBlankStatusCell"
+                                                    text="{= ${$data>isBlankValue} ? 'Clear Field' : 'Set Value'}"
+                                                    state="{= ${$data>isBlankValue} ? 'Warning' : 'Success'}"
+                                                    icon="{= ${$data>isBlankValue} ? 'sap-icon://warning' : 'sap-icon://accept'}"
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </Panel>
+                        </CustomListItem>
+                    </List>
+                </Panel>
+
+                <!-- All Changes Detailed List -->
+                <Panel
+                    id="allChangesSummaryPanel"
+                    headerText="Complete Change List"
+                    expandable="true"
+                    expanded="false"
+                    visible="{= ${changeSummaryDetails>/ChangesSummary/totalChanges} > 0}"
+                    class="sapUiSmallMarginTop"
+                >
+                    <Table
+                        id="allChangesSummaryTable"
+                        items="{changeSummaryDetails>/ChangesSummary/fieldChanges}"
+                        mode="None"
+                        growing="true"
+                        growingThreshold="20"
+                        alternateRowColors="true"
+                    >
+                        <columns>
+                            <Column
+                                id="allFieldDisplayNameColumn"
+                                width="25%"
+                            >
+                                <Text
+                                    id="allFieldDisplayNameHeader"
+                                    text="Field Name"
+                                />
+                            </Column>
+                            <Column
+                                id="allFieldSectionColumn"
+                                width="15%"
+                            >
+                                <Text
+                                    id="allFieldSectionHeader"
+                                    text="Section"
+                                />
+                            </Column>
+                            <Column
+                                id="allFieldNewValueColumn"
+                                width="35%"
+                            >
+                                <Text
+                                    id="allFieldNewValueHeader"
+                                    text="New Value"
+                                />
+                            </Column>
+                            <Column
+                                id="allFieldChangeTypeColumn"
+                                width="15%"
+                            >
+                                <Text
+                                    id="allFieldChangeTypeHeader"
+                                    text="Change Type"
+                                />
+                            </Column>
+                            <Column
+                                id="allFieldStatusColumn"
+                                width="10%"
+                            >
+                                <Text
+                                    id="allFieldStatusHeader"
+                                    text="Status"
+                                />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="allChangesSummaryTableItem">
+                                <cells>
+                                    <Text
+                                        id="allFieldDisplayNameCell"
+                                        text="{changeSummaryDetails>displayName}"
+                                    />
+                                    <Text
+                                        id="allFieldSectionCell"
+                                        text="{= ${changeSummaryDetails>section}.replace('_', ' ').replace(/^\w/, function(c) { return c.toUpperCase(); })}"
+                                    />
+                                    <Text
+                                        id="allFieldNewValueCell"
+                                        text="{= ${changeSummaryDetails>isBlankValue} ? '&lt;Will be cleared&gt;' : ${changeSummaryDetails>newValue}}"
+                                        wrapping="true"
+                                    />
+                                    <Text
+                                        id="allFieldChangeTypeCell"
+                                        text="{= ${changeSummaryDetails>isBlankValue} ? 'Clear Field' : 'Update Value'}"
+                                    />
+                                    <core:Icon
+                                        id="allFieldStatusCell"
+                                        src="{= ${changeSummaryDetails>isBlankValue} ? 'sap-icon://warning' : 'sap-icon://accept'}"
+                                        color="{= ${changeSummaryDetails>isBlankValue} ? 'Critical' : 'Positive'}"
+                                        tooltip="{= ${changeSummaryDetails>isBlankValue} ? 'Field will be cleared' : 'Field will be updated'}"
+                                    />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+                <!-- Blank Assignments Only -->
+                <Panel
+                    id="blankAssignmentsSummaryPanel"
+                    headerText="Fields to be Cleared ({= ${changeSummaryDetails>/ChangesSummary/blankAssignments} || 0})"
+                    expandable="true"
+                    expanded="true"
+                    visible="{= ${changeSummaryDetails>/ChangesSummary/blankAssignments} > 0}"
+                    class="sapUiSmallMarginTop"
+                >
+                    <MessageStrip
+                        id="blankAssignmentsDetailWarning"
+                        text="The following fields will be permanently cleared. This action cannot be undone through this interface."
+                        type="Warning"
+                        showIcon="true"
+                        class="sapUiSmallMarginBottom"
+                    />
+
+                    <Table
+                        id="blankAssignmentsSummaryTable"
+                        items="{
+                            path: 'changeSummaryDetails>/ChangesSummary/fieldChanges',
+                            filters: [{
+                                path: 'isBlankValue',
+                                operator: 'EQ',
+                                value1: true
+                            }]
+                        }"
+                        mode="None"
+                        alternateRowColors="true"
+                    >
+                        <columns>
+                            <Column
+                                id="_IDGenColumn"
+                                width="30%"
+                            >
+                                <Text
+                                    id="_IDGenText3"
+                                    text="Field Name"
+                                />
+                            </Column>
+                            <Column
+                                id="blankFieldSectionColumn"
+                                width="20%"
+                            >
+                                <Text
+                                    id="blankFieldSectionHeader"
+                                    text="Section"
+                                />
+                            </Column>
+                            <Column
+                                id="blankFieldActionColumn"
+                                width="30%"
+                            >
+                                <Text
+                                    id="blankFieldActionHeader"
+                                    text="Action"
+                                />
+                            </Column>
+                            <Column
+                                id="blankFieldWarningColumn"
+                                width="20%"
+                            >
+                                <Text
+                                    id="blankFieldWarningHeader"
+                                    text="Warning Level"
+                                />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem
+                                id="blankAssignmentsSummaryTableItem"
+                            >
+                                <cells>
+                                    <Text
+                                        id="_IDGenText4"
+                                        text="{changeSummaryDetails>displayName}"
+                                    />
+                                    <Text
+                                        id="blankFieldSectionCell"
+                                        text="{= ${changeSummaryDetails>section}.replace('_', ' ').replace(/^\w/, function(c) { return c.toUpperCase(); })}"
+                                    />
+                                    <Text
+                                        id="blankFieldActionCell"
+                                        text="Clear field contents"
+                                    />
+                                    <ObjectStatus
+                                        id="blankFieldWarningCell"
+                                        text="High"
+                                        state="Warning"
+                                        icon="sap-icon://warning"
+                                    />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                        <noData>
+                            <Text
+                                id="noBlankAssignmentsSummaryText"
+                                text="No fields will be cleared."
+                            />
+                        </noData>
+                    </Table>
+                </Panel>
+
+                <!-- No Changes Message -->
+                <MessageStrip
+                    id="noChangesSummaryMessage"
+                    text="No changes detected for this asset. Please verify your change flags and values."
+                    type="Information"
+                    showIcon="true"
+                    visible="{= ${changeSummaryDetails>/ChangesSummary/totalChanges} === 0}"
+                    class="sapUiMediumMargin"
+                />
+
+                <!-- Validation Issues (if any) -->
+                <Panel
+                    id="validationIssuesSummaryPanel"
+                    headerText="Validation Issues"
+                    expandable="true"
+                    expanded="true"
+                    visible="{= ${changeSummaryDetails>/Status} === 'Invalid'}"
+                    class="sapUiSmallMarginTop"
+                >
+                    <MessageStrip
+                        id="validationIssuesSummaryMessage"
+                        text="This asset has validation errors that must be resolved before submission."
+                        type="Error"
+                        showIcon="true"
+                        class="sapUiSmallMarginBottom"
+                    />
+
+                    <List
+                        id="validationIssuesSummaryList"
+                        items="{changeSummaryDetails>/ProcessedValidationErrors}"
+                        mode="None"
+                        noDataText="No validation errors found."
+                    >
+                        <StandardListItem
+                            id="validationIssuesSummaryItem"
+                            title="{= ${changeSummaryDetails>field} ? ${changeSummaryDetails>field} + ': ' + ${changeSummaryDetails>message} : ${changeSummaryDetails>message}}"
+                            description="Severity: {changeSummaryDetails>severity}"
+                            icon="{= ${changeSummaryDetails>severity} === 'Error' ? 'sap-icon://error' : 'sap-icon://warning'}"
+                            iconInset="false"
+                            type="Inactive"
+                        />
+                    </List>
+                </Panel>
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                id="exportSingleChangeSummaryButton"
+                text="Export Summary"
+                icon="sap-icon://excel-attachment"
+                press=".onExportSingleChangeSummary"
+                type="Default"
+            />
+            <Button
+                id="showChangeDetailsButton"
+                text="Show Details"
+                icon="sap-icon://detail-view"
+                press=".onShowFullChangeDetails"
+                type="Default"
+            />
+            <Button
+                id="closeSummaryButton"
+                text="Close"
+                press=".onCloseChangeSummaryDialog"
+                type="Emphasized"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,508 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Dialog
+        id="assetChangeDetailsDialog"
+        title="Asset Details: {changeDetails>/FixedAsset}"
+        contentWidth="90%"
+        contentHeight="80%"
+        stretch="{device>/system/phone}"
+    >
+        <content>
+            <VBox
+                id="_IDGenVBox8"
+                class="sapUiMediumMargin"
+            >
+                <!-- Asset Header -->
+                <Panel
+                    id="_IDGenPanel2"
+                    class="sapUiSmallMarginBottom"
+                >
+                    <HBox
+                        id="_IDGenHBox3"
+                        alignItems="Center"
+                        justifyContent="SpaceBetween"
+                        class="sapUiMediumMargin"
+                    >
+                        <VBox id="_IDGenVBox9">
+                            <Title
+                                id="_IDGenTitle4"
+                                text="Asset: {changeDetails>/FixedAsset}"
+                                level="H3"
+                            />
+                            <Text
+                                id="_IDGenText16"
+                                text="Company: {changeDetails>/CompanyCode} | Sequence: {changeDetails>/SequenceNumber}"
+                                class="sapUiTinyMarginTop"
+                            />
+                        </VBox>
+                        <HBox
+                            id="_IDGenHBox4"
+                            alignItems="Center"
+                        >
+                            <ObjectStatus
+                                id="_IDGenObjectStatus"
+                                text="{changeDetails>/Status}"
+                                state="{= ${changeDetails>/Status} === 'Valid' ? 'Success' : 'Error'}"
+                                class="sapUiSmallMarginEnd"
+                            />
+                            <ObjectNumber
+                                id="_IDGenObjectNumber5"
+                                number="{= ${changeDetails>/ChangesSummary/totalChanges} || 0}"
+                                unit="Changes"
+                                state="Information"
+                            />
+                        </HBox>
+                    </HBox>
+                </Panel>
+
+                <!-- Tab Container -->
+                <IconTabBar
+                    id="_IDGenIconTabBar"
+                    class="sapUiResponsiveContentPadding"
+                    expandable="false"
+                    selectedKey="allFieldsTab"
+                >
+                    <items>
+                        <!-- All Fields Tab -->
+                        <IconTabFilter
+                            id="_IDGenIconTabFilter"
+                            icon="sap-icon://detail-view"
+                            text="All Fields"
+                            key="allFieldsTab"
+                        >
+                            <VBox
+                                id="_IDGenVBox10"
+                                class="sapUiMediumMargin"
+                            >
+                                <!-- Field Groups -->
+                                <Panel
+                                    id="_IDGenPanel3"
+                                    headerText="General Information"
+                                    expandable="true"
+                                    expanded="true"
+                                    class="sapUiSmallMarginBottom"
+                                >
+                                    <Table
+                                        id="_IDGenTable1"
+                                        items="{
+                                            path: 'changeDetails>/AllFields',
+                                            filters: [{
+                                                path: 'section',
+                                                operator: 'EQ',
+                                                value1: 'General'
+                                            }]
+                                        }"
+                                        mode="None"
+                                    >
+                                        <columns>
+                                            <Column
+                                                id="_IDGenColumn6"
+                                                width="30%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText17"
+                                                    text="Field"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn15"
+                                                width="50%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText18"
+                                                    text="Value"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn16"
+                                                width="20%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText19"
+                                                    text="Status"
+                                                />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem3"
+                                            >
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText20"
+                                                        text="{changeDetails>displayName}"
+                                                    />
+                                                    <Text
+                                                        id="_IDGenText21"
+                                                        text="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? '&lt;Will be cleared&gt;' : ${changeDetails>newValue}) : (${changeDetails>currentValue} || '&lt;Empty&gt;')}"
+                                                        wrapping="true"
+                                                    />
+                                                    <ObjectStatus
+                                                        id="_IDGenObjectStatus1"
+                                                        text="{= ${changeDetails>isChanged} ? 'Changed' : 'No Change'}"
+                                                        state="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'Warning' : 'Success') : 'None'}"
+                                                        icon="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'sap-icon://warning' : 'sap-icon://edit') : 'sap-icon://accept'}"
+                                                    />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </Panel>
+
+                                <Panel
+                                    id="_IDGenPanel4"
+                                    headerText="Account Assignment"
+                                    expandable="true"
+                                    expanded="true"
+                                    class="sapUiSmallMarginBottom"
+                                >
+                                    <Table
+                                        id="_IDGenTable3"
+                                        items="{
+                                            path: 'changeDetails>/AllFields',
+                                            filters: [{
+                                                path: 'section',
+                                                operator: 'EQ',
+                                                value1: 'AccountAssignment'
+                                            }]
+                                        }"
+                                        mode="None"
+                                    >
+                                        <columns>
+                                            <Column
+                                                id="_IDGenColumn17"
+                                                width="30%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText22"
+                                                    text="Field"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn18"
+                                                width="50%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText23"
+                                                    text="Value"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn19"
+                                                width="20%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText24"
+                                                    text="Status"
+                                                />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem4"
+                                            >
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText28"
+                                                        text="{changeDetails>displayName}"
+                                                    />
+                                                    <Text
+                                                        id="_IDGenText35"
+                                                        text="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? '&lt;Will be cleared&gt;' : ${changeDetails>newValue}) : (${changeDetails>currentValue} || '&lt;Empty&gt;')}"
+                                                        wrapping="true"
+                                                    />
+                                                    <ObjectStatus
+                                                        id="_IDGenObjectStatus2"
+                                                        text="{= ${changeDetails>isChanged} ? 'Changed' : 'No Change'}"
+                                                        state="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'Warning' : 'Success') : 'None'}"
+                                                        icon="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'sap-icon://warning' : 'sap-icon://edit') : 'sap-icon://accept'}"
+                                                    />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </Panel>
+
+                                <Panel
+                                    id="_IDGenPanel5"
+                                    headerText="Depreciation Areas"
+                                    expandable="true"
+                                    expanded="true"
+                                    class="sapUiSmallMarginBottom"
+                                >
+                                    <Table
+                                        id="_IDGenTable5"
+                                        items="{
+                                            path: 'changeDetails>/AllFields',
+                                            filters: [{
+                                                path: 'section',
+                                                operator: 'EQ',
+                                                value1: 'Depreciation'
+                                            }]
+                                        }"
+                                        mode="None"
+                                    >
+                                        <columns>
+                                            <Column
+                                                id="_IDGenColumn20"
+                                                width="30%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText36"
+                                                    text="Field"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn21"
+                                                width="50%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText37"
+                                                    text="Value"
+                                                />
+                                            </Column>
+                                            <Column
+                                                id="_IDGenColumn22"
+                                                width="20%"
+                                            >
+                                                <Text
+                                                    id="_IDGenText38"
+                                                    text="Status"
+                                                />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem5"
+                                            >
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText39"
+                                                        text="{changeDetails>displayName}"
+                                                    />
+                                                    <Text
+                                                        id="_IDGenText40"
+                                                        text="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? '&lt;Will be cleared&gt;' : ${changeDetails>newValue}) : (${changeDetails>currentValue} || '&lt;Empty&gt;')}"
+                                                        wrapping="true"
+                                                    />
+                                                    <ObjectStatus
+                                                        id="_IDGenObjectStatus3"
+                                                        text="{= ${changeDetails>isChanged} ? 'Changed' : 'No Change'}"
+                                                        state="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'Warning' : 'Success') : 'None'}"
+                                                        icon="{= ${changeDetails>isChanged} ? (${changeDetails>isBlank} ? 'sap-icon://warning' : 'sap-icon://edit') : 'sap-icon://accept'}"
+                                                    />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </Panel>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <!-- Changes Only Tab -->
+                        <IconTabFilter
+                            id="_IDGenIconTabFilter1"
+                            icon="sap-icon://edit"
+                            text="Changes Only ({= ${changeDetails>/ChangesSummary/totalChanges} || 0})"
+                            key="changesOnlyTab"
+                        >
+                            <VBox
+                                id="_IDGenVBox11"
+                                class="sapUiMediumMargin"
+                            >
+                                <MessageStrip
+                                    id="_IDGenMessageStrip4"
+                                    text="Showing only fields that will be changed"
+                                    type="Information"
+                                    showIcon="true"
+                                    class="sapUiSmallMarginBottom"
+                                    visible="{= ${changeDetails>/ChangesSummary/totalChanges} > 0}"
+                                />
+
+                                <Table
+                                    id="_IDGenTable6"
+                                    items="{
+                                        path: 'changeDetails>/AllFields',
+                                        filters: [{
+                                            path: 'isChanged',
+                                            operator: 'EQ',
+                                            value1: true
+                                        }]
+                                    }"
+                                    mode="None"
+                                    growing="true"
+                                    growingThreshold="20"
+                                >
+                                    <columns>
+                                        <Column
+                                            id="_IDGenColumn26"
+                                            width="25%"
+                                        >
+                                            <Text
+                                                id="_IDGenText41"
+                                                text="Field Name"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="_IDGenColumn27"
+                                            width="20%"
+                                        >
+                                            <Text
+                                                id="_IDGenText48"
+                                                text="Section"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="_IDGenColumn28"
+                                            width="25%"
+                                        >
+                                            <Text
+                                                id="_IDGenText49"
+                                                text="Current Value"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="_IDGenColumn29"
+                                            width="25%"
+                                        >
+                                            <Text
+                                                id="_IDGenText50"
+                                                text="New Value"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="_IDGenColumn30"
+                                            width="5%"
+                                        >
+                                            <Text
+                                                id="_IDGenText53"
+                                                text=""
+                                            />
+                                        </Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem
+                                            id="_IDGenColumnListItem6"
+                                        >
+                                            <cells>
+                                                <Text
+                                                    id="_IDGenText54"
+                                                    text="{changeDetails>displayName}"
+                                                />
+                                                <Text
+                                                    id="_IDGenText55"
+                                                    text="{changeDetails>section}"
+                                                />
+                                                <Text
+                                                    id="_IDGenText57"
+                                                    text="{= ${changeDetails>currentValue} || '&lt;Empty&gt;'}"
+                                                    wrapping="true"
+                                                />
+                                                <Text
+                                                    id="_IDGenText58"
+                                                    text="{= ${changeDetails>isBlank} ? '&lt;Will be cleared&gt;' : ${changeDetails>newValue}}"
+                                                    wrapping="true"
+                                                />
+                                                <core:Icon
+                                                    id="_IDGenIcon"
+                                                    src="{= ${changeDetails>isBlank} ? 'sap-icon://warning' : 'sap-icon://edit'}"
+                                                    color="{= ${changeDetails>isBlank} ? 'Critical' : 'Positive'}"
+                                                    tooltip="{= ${changeDetails>isBlank} ? 'Will be cleared' : 'Will be updated'}"
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                    <noData>
+                                        <MessageStrip
+                                            id="_IDGenMessageStrip5"
+                                            text="No changes detected for this asset."
+                                            type="Information"
+                                            showIcon="true"
+                                        />
+                                    </noData>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <!-- Validation Errors Tab (only show if errors exist) -->
+                        <IconTabFilter
+                            id="_IDGenIconTabFilter2"
+                            icon="sap-icon://error"
+                            text="Errors ({= ${changeDetails>/ProcessedValidationErrors}.length || 0})"
+                            key="errorsTab"
+                            visible="{= ${changeDetails>/ProcessedValidationErrors} &amp;&amp; ${changeDetails>/ProcessedValidationErrors}.length > 0}"
+                        >
+                            <VBox
+                                id="_IDGenVBox12"
+                                class="sapUiMediumMargin"
+                            >
+                                <MessageStrip
+                                    id="_IDGenMessageStrip6"
+                                    text="The following errors must be resolved before this asset can be processed."
+                                    type="Error"
+                                    showIcon="true"
+                                    class="sapUiSmallMarginBottom"
+                                />
+
+                                <Table
+                                    id="_IDGenTable7"
+                                    items="{changeDetails>/ProcessedValidationErrors}"
+                                    mode="None"
+                                >
+                                    <columns>
+                                        <Column
+                                            id="_IDGenColumn31"
+                                            width="25%"
+                                        >
+                                            <Text
+                                                id="_IDGenText59"
+                                                text="Field"
+                                            />
+                                        </Column>
+                                        <Column
+                                            id="_IDGenColumn32"
+                                            width="75%"
+                                        >
+                                            <Text
+                                                id="_IDGenText60"
+                                                text="Error Message"
+                                            />
+                                        </Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem
+                                            id="_IDGenColumnListItem7"
+                                        >
+                                            <cells>
+                                                <Text
+                                                    id="_IDGenText61"
+                                                    text="{= ${changeDetails>field} || 'General'}"
+                                                />
+                                                <Text
+                                                    id="_IDGenText62"
+                                                    text="{changeDetails>message}"
+                                                    wrapping="true"
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                id="_IDGenButton"
+                text="Close"
+                press=".onCloseAssetDetailsDialog"
+                type="Emphasized"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,456 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="helpDialog"
+        title="Asset Master Change Excel Upload Help"
+        contentWidth="600px"
+        stretch="{device>/system/phone}"
+    >
+        <content>
+            <IconTabBar
+                id="helpTabBar"
+                expanded="true"
+            >
+                <items>
+                    <IconTabFilter
+                        id="gettingStartedTab"
+                        icon="sap-icon://hint"
+                        text="Getting Started"
+                    >
+                        <content>
+                            <VBox
+                                id="gettingStartedVBox"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd"
+                            >
+                                <items>
+                                    <Title
+                                        id="howToUploadTitle"
+                                        text="How to Upload Asset Master Change Data"
+                                        class="sapUiSmallMarginTop"
+                                    />
+                                    <Text
+                                        id="step1Text"
+                                        text="1. Download the template using the 'Download Template' button."
+                                        class="sapUiTinyMarginTop"
+                                    />
+                                    <Text
+                                        id="step2Text"
+                                        text="2. Fill in the template with asset numbers and fields to change."
+                                    />
+                                    <Text
+                                        id="step3Text"
+                                        text="3. Mark fields for change using the '_Change' flag columns."
+                                    />
+                                    <Text
+                                        id="step4Text"
+                                        text="4. Upload the completed file using the 'Choose File' button."
+                                    />
+                                    <Text
+                                        id="step5Text"
+                                        text="5. Review validation results and fix any errors."
+                                    />
+                                    <Text
+                                        id="step6Text"
+                                        text="6. Click 'Submit Assets for Change' to process valid entries."
+                                    />
+                                </items>
+                            </VBox>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        id="commonErrorsTab"
+                        icon="sap-icon://alert"
+                        text="Common Errors"
+                    >
+                        <content>
+                            <List
+                                id="commonErrorsList"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiSmallMarginTop"
+                            >
+                                <items>
+                                    <StandardListItem
+                                        id="missingCompanyCodeItem"
+                                        title="Missing Company Code"
+                                        description="Company Code is required for each asset change."
+                                    />
+                                    <StandardListItem
+                                        id="missingFixedAssetItem"
+                                        title="Missing Fixed Asset Number"
+                                        description="Fixed Asset Number is required to identify the asset to change."
+                                    />
+                                    <StandardListItem
+                                        id="noChangesMarkedItem"
+                                        title="No Changes Marked"
+                                        description="At least one field must be marked for change using the '_Change' flag."
+                                    />
+                                    <StandardListItem
+                                        id="invalidChangeValueItem"
+                                        title="Invalid Change Value"
+                                        description="Change values must meet field validation requirements."
+                                    />
+                                    <StandardListItem
+                                        id="blankRequiredFieldItem"
+                                        title="Blank Required Field"
+                                        description="Some fields cannot be set to blank (e.g., Asset Description)."
+                                    />
+                                    <StandardListItem
+                                        id="invalidDepreciationKeyItem"
+                                        title="Invalid Depreciation Key"
+                                        description="Depreciation Key must be exactly 4 characters when provided."
+                                    />
+                                </items>
+                            </List>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        id="fileFormatTab"
+                        icon="sap-icon://attachment-text-file"
+                        text="File Format"
+                    >
+                        <content>
+                            <VBox
+                                id="fileFormatVBox"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd"
+                            >
+                                <items>
+                                    <Text
+                                        id="columnsDescriptionText"
+                                        text="The Excel file should contain the following columns:"
+                                        class="sapUiSmallMarginTop"
+                                    />
+                                    <Panel
+                                        id="requiredFieldsPanel"
+                                        headerText="Required Fields"
+                                        expandable="true"
+                                        expanded="true"
+                                    >
+                                        <content>
+                                            <List id="requiredFieldsList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="sequenceNumberItem"
+                                                        title="Sequence ID: Line sequence number"
+                                                    />
+                                                    <StandardListItem
+                                                        id="companyCodeItem"
+                                                        title="Company Code: Company code of the asset"
+                                                    />
+                                                    <StandardListItem
+                                                        id="fixedAssetItem"
+                                                        title="Fixed Asset: Asset number to be changed"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Panel
+                                        id="changeableFieldsPanel"
+                                        headerText="Changeable Fields"
+                                        expandable="true"
+                                        expanded="false"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <List id="changeableFieldsList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="assetDescriptionItem"
+                                                        title="Fixed Asset Description_Value / _Change: Main description (required if changed)"
+                                                    />
+                                                    <StandardListItem
+                                                        id="additionalDescriptionItem"
+                                                        title="Asset Additional Description_Value / _Change: Secondary description"
+                                                    />
+                                                    <StandardListItem
+                                                        id="serialNumberItem"
+                                                        title="Asset Serial Number_Value / _Change: Serial number"
+                                                    />
+                                                    <StandardListItem
+                                                        id="wbsElementItem"
+                                                        title="WBS Element External ID_Value / _Change: WBS element"
+                                                    />
+                                                    <StandardListItem
+                                                        id="roomItem"
+                                                        title="Room_Value / _Change: Room/location"
+                                                    />
+                                                    <StandardListItem
+                                                        id="inventoryNoteItem"
+                                                        title="Inventory Note_Value / _Change: Inventory notes"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Panel
+                                        id="depreciationFieldsPanel"
+                                        headerText="Depreciation Fields (by Area)"
+                                        expandable="true"
+                                        expanded="false"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <List id="depreciationFieldsList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="depreciationKeyItem"
+                                                        title="Depreciation Key_01_Value / _Change: Depreciation method (Area 01)"
+                                                    />
+                                                    <StandardListItem
+                                                        id="usefulLifeYearsItem"
+                                                        title="Planned Useful Life In Years_01_Value / _Change: Years (Area 01)"
+                                                    />
+                                                    <StandardListItem
+                                                        id="usefulLifePeriodsItem"
+                                                        title="Planned Useful Life In Periods_01_Value / _Change: Periods (Area 01)"
+                                                    />
+                                                    <StandardListItem
+                                                        id="scrapAmountItem"
+                                                        title="Scrap Amount In CoCo Crcy_01_Value / _Change: Scrap amount (Area 01)"
+                                                    />
+                                                    <StandardListItem
+                                                        id="scrapPercentItem"
+                                                        title="Acqn Prodn Cost Scrap Percent_01_Value / _Change: Scrap % (Area 01)"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Panel
+                                        id="indiaSpecificPanel"
+                                        headerText="India-Specific Fields"
+                                        expandable="true"
+                                        expanded="false"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <List id="indiaSpecificList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="assetBlockItem"
+                                                        title="IN_Asset Block_Value / _Change: Asset block code"
+                                                    />
+                                                    <StandardListItem
+                                                        id="putToUseDateItem"
+                                                        title="IN_Asset Put To Use Date_Value / _Change: Put to use date"
+                                                    />
+                                                    <StandardListItem
+                                                        id="priorYearItem"
+                                                        title="IN_Asset Is Prior Year_Value / _Change: Prior year flag"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Text
+                                        id="changeColumnExplanation"
+                                        text="Note: Each changeable field has two columns - one for the new value (_Value) and one to mark if it should be changed (_Change). Set _Change to 'Y', 'X', or 'TRUE' to mark for change."
+                                        class="sapUiSmallMarginTop sapUiMediumMarginBottom"
+                                    />
+                                    <Link
+                                        id="downloadTemplateLink"
+                                        text="Download Template"
+                                        press="onDownloadTemplate"
+                                        class="sapUiSmallMarginTop"
+                                    />
+                                </items>
+                            </VBox>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        id="processingRulesTab"
+                        icon="sap-icon://process"
+                        text="Processing Rules"
+                    >
+                        <content>
+                            <VBox
+                                id="processingRulesVBox"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd"
+                            >
+                                <items>
+                                    <Title
+                                        id="processingRulesTitle"
+                                        text="Asset Master Change Processing Rules"
+                                        class="sapUiSmallMarginTop"
+                                    />
+                                    <Text
+                                        id="rulesDescriptionText"
+                                        text="Each asset change entry must follow these rules:"
+                                        class="sapUiTinyMarginTop"
+                                    />
+                                    <List id="processingRulesList">
+                                        <items>
+                                            <StandardListItem
+                                                id="existingAssetRule"
+                                                title="Existing Asset Required"
+                                                description="Fixed Asset Number must exist in the system for the company code."
+                                            />
+                                            <StandardListItem
+                                                id="atLeastOneChangeRule"
+                                                title="At Least One Change Required"
+                                                description="At least one field must be marked for change."
+                                            />
+                                            <StandardListItem
+                                                id="validChangeValuesRule"
+                                                title="Valid Change Values"
+                                                description="New values must meet field validation requirements (length, format, etc.)."
+                                            />
+                                            <StandardListItem
+                                                id="nonBlankRequiredRule"
+                                                title="Non-Blank Required Fields"
+                                                description="Fields like Asset Description cannot be set to blank."
+                                            />
+                                            <StandardListItem
+                                                id="depreciationKeyFormatRule"
+                                                title="Depreciation Key Format"
+                                                description="Depreciation Key must be exactly 4 characters when provided."
+                                            />
+                                            <StandardListItem
+                                                id="numericFieldsRule"
+                                                title="Numeric Fields Validation"
+                                                description="Useful life and scrap values must be valid numbers within acceptable ranges."
+                                            />
+                                            <StandardListItem
+                                                id="blankMarkersRule"
+                                                title="Blank Value Markers"
+                                                description="Use '&lt;BLANK&gt;', '&lt;CLEAR&gt;', or '&lt;EMPTY&gt;' to explicitly set fields to blank."
+                                            />
+                                        </items>
+                                    </List>
+                                </items>
+                            </VBox>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        id="changePatternTab"
+                        icon="sap-icon://edit"
+                        text="Change Patterns"
+                    >
+                        <content>
+                            <VBox
+                                id="changePatternVBox"
+                                class="sapUiSmallMarginBegin sapUiSmallMarginEnd"
+                            >
+                                <items>
+                                    <Title
+                                        id="changePatternTitle"
+                                        text="Understanding Change Patterns"
+                                        class="sapUiSmallMarginTop"
+                                    />
+                                    <Text
+                                        id="changePatternDescription"
+                                        text="Asset Master Change uses a specific pattern for marking fields to change:"
+                                        class="sapUiTinyMarginTop"
+                                    />
+                                    <Panel
+                                        id="basicChangePanel"
+                                        headerText="Basic Field Changes"
+                                        expandable="true"
+                                        expanded="true"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <List id="basicChangeList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="valueColumnItem"
+                                                        title="[FieldName]_Value"
+                                                        description="Contains the new value for the field"
+                                                    />
+                                                    <StandardListItem
+                                                        id="changeColumnItem"
+                                                        title="[FieldName]_Change"
+                                                        description="Set to 'Y', 'X', 'TRUE', or '1' to mark field for change"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Panel
+                                        id="areaSpecificPanel"
+                                        headerText="Area-Specific Changes (Depreciation)"
+                                        expandable="true"
+                                        expanded="false"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <List id="areaSpecificList">
+                                                <items>
+                                                    <StandardListItem
+                                                        id="areaValueItem"
+                                                        title="[FieldName]_[AreaCode]_Value"
+                                                        description="Example: Depreciation Key_01_Value"
+                                                    />
+                                                    <StandardListItem
+                                                        id="areaChangeItem"
+                                                        title="[FieldName]_[AreaCode]_Change"
+                                                        description="Example: Depreciation Key_01_Change"
+                                                    />
+                                                </items>
+                                            </List>
+                                        </content>
+                                    </Panel>
+                                    <Panel
+                                        id="examplePanel"
+                                        headerText="Example"
+                                        expandable="true"
+                                        expanded="false"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <content>
+                                            <VBox id="_IDGenVBox13">
+                                                <Text
+                                                    id="_IDGenText6"
+                                                    text="To change Asset Description:"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText7"
+                                                    text="• Fixed Asset Description_Value: 'New Description'"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText63"
+                                                    text="• Fixed Asset Description_Change: 'Y'"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText64"
+                                                    text=""
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText65"
+                                                    text="To change Depreciation Key for Area 01:"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText66"
+                                                    text="• Depreciation Key_01_Value: 'INDD'"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                                <Text
+                                                    id="_IDGenText67"
+                                                    text="• Depreciation Key_01_Change: 'Y'"
+                                                    class="sapUiTinyMarginTop"
+                                                />
+                                            </VBox>
+                                        </content>
+                                    </Panel>
+                                </items>
+                            </VBox>
+                        </content>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+        <endButton>
+            <Button
+                id="closeHelpButton"
+                text="Close"
+                press=".onHelpDialogClose"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

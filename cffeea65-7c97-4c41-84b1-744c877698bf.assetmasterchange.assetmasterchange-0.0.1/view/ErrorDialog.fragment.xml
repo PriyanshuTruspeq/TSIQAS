@@ -1,0 +1,146 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="errorDialog"
+        title="{error>/title}"
+        contentWidth="50rem"
+        resizable="true"
+        draggable="true"
+        afterClose=".onDialogAfterClose"
+    >
+        <content>
+            <VBox
+                id="_IDGenVBox6"
+                class="sapUiSmallMargin"
+            >
+                <MessageStrip
+                    id="_IDGenMessageStrip1"
+                    text="{error>/message}"
+                    type="Error"
+                    showIcon="true"
+                    class="sapUiSmallMarginBottom"
+                />
+
+                <Table
+                    id="errorTable"
+                    items="{
+                        path: 'error>/errors',
+                        templateShareable: true
+                    }"
+                    fixedLayout="false"
+                    width="100%"
+                >
+                    <columns>
+                        <Column
+                            id="_IDGenColumn7"
+                            width="6rem"
+                        >
+                            <Text
+                                id="_IDGenText42"
+                                text="Sequence"
+                            />
+                        </Column>
+                        <Column
+                            id="_IDGenColumn13"
+                            width="6rem"
+                        >
+                            <Text
+                                id="_IDGenText43"
+                                text="Status Code"
+                            />
+                        </Column>
+                        <Column id="_IDGenColumn14">
+                            <Text
+                                id="_IDGenText44"
+                                text="Error Details"
+                            />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem2">
+                            <cells>
+                                <Text
+                                    id="_IDGenText45"
+                                    text="{error>sequenceId}"
+                                />
+                                <Text
+                                    id="_IDGenText46"
+                                    text="{error>statusCode}"
+                                />
+                                <VBox id="_IDGenVBox7">
+                                    <Text
+                                        id="_IDGenText47"
+                                        text="{error>statusMessage}"
+                                    />
+                                    <List
+                                        id="_IDGenList2"
+                                        visible="{= !!${error>errorDetails} &amp;&amp; ${error>errorDetails}.length > 0 }"
+                                        showSeparators="None"
+                                        items="{
+                                            path: 'error>errorDetails',
+                                            templateShareable: true
+                                        }"
+                                    >
+                                        <StandardListItem
+                                            id="_IDGenStandardListItem3"
+                                            title="{error>}"
+                                            type="Inactive"
+                                        />
+                                    </List>
+                                </VBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+
+        <buttons>
+            <Button
+                id="_IDGenButton13"
+                text="Export to Excel"
+                icon="sap-icon://excel-attachment"
+                press=".onExportData"
+            >
+                <customData>
+                    <core:CustomData
+                        key="format"
+                        value="xlsx"
+                    />
+                    <core:CustomData
+                        key="type"
+                        value="error"
+                    />
+                </customData>
+            </Button>
+            <Button
+                id="_IDGenButton14"
+                text="Export to CSV"
+                icon="sap-icon://attachment-text-file"
+                press=".onExportData"
+            >
+                <customData>
+                    <core:CustomData
+                        key="format"
+                        value="csv"
+                    />
+                    <core:CustomData
+                        key="type"
+                        value="error"
+                    />
+                </customData>
+            </Button>
+            <Button
+                id="_IDGenButton16"
+                text="Close"
+                press=".onCloseErrorDialog"
+                type="Emphasized"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
