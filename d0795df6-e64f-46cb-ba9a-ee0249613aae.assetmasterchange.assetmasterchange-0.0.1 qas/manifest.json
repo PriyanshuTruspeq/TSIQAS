@@ -1,0 +1,130 @@
+{
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "assetmasterchange",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.17.6",
+            "toolsId": "17f5927e-0aa7-44aa-a906-747899043910"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "sap/opu/odata4/sap/api_fixedasset/srvd_a2x/sap/fixedasset/0001/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/mainService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.130.10",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "assetmasterchange.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true,
+                    "groupId": "$direct",
+                    "updateGroupId": "$direct"
+                }
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ],
+            "js": [
+                {
+                    "name": "utils",
+                    "uri": "utils/"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "transition": "slide",
+                "type": "View",
+                "viewType": "XML",
+                "path": "assetmasterchange.view",
+                "async": true,
+                "viewPath": "assetmasterchange.view"
+            },
+            "routes": [
+                {
+                    "name": "Routeassetmasterchange",
+                    "pattern": ":?query:",
+                    "target": [
+                        "Targetassetmasterchange"
+                    ]
+                }
+            ],
+            "targets": {
+                "Targetassetmasterchange": {
+                    "id": "assetmasterchange",
+                    "name": "assetmasterchange"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "assetmasterchange.view.App",
+            "type": "XML",
+            "id": "App",
+            "async": true
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "assetmasterchange"
+    }
+}
